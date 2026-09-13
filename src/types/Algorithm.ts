@@ -1,26 +1,21 @@
 
 /**
- * Algoritmos de ordenamiento disponibles
- * en el simulador.
+ * Algoritmos de ordenamiento disponibles.
  */
-export enum AlgorithmType {
-  BUBBLE_SORT = "BUBBLE_SORT",
-  SELECTION_SORT = "SELECTION_SORT",
-  INSERTION_SORT = "INSERTION_SORT",
-  MERGE_SORT = "MERGE_SORT",
-  QUICK_SORT = "QUICK_SORT",
-  HEAP_SORT = "HEAP_SORT",
-  SHELL_SORT = "SHELL_SORT",
-}
+export type AlgorithmType =
+  | "BUBBLE_SORT"
+  | "SELECTION_SORT"
+  | "INSERTION_SORT"
+  | "MERGE_SORT"
+  | "QUICK_SORT"
+  | "HEAP_SORT"
+  | "SHELL_SORT";
 
 /**
  * Lenguajes disponibles para visualizar
  * el código de los algoritmos.
  */
-export enum CodeLanguage {
-  CPP = "CPP",
-  PYTHON = "PYTHON",
-}
+export type CodeLanguage = "CPP" | "PYTHON";
 
 /**
  * Complejidad temporal de un algoritmo.
@@ -61,24 +56,23 @@ export interface Algorithm {
   spaceComplexity: string;
 
   /**
-   * Indica si el algoritmo mantiene
-   * el orden relativo de elementos iguales.
+   * Indica si el algoritmo es estable.
    */
   stable: boolean;
 
   /**
-   * Indica si trabaja principalmente
+   * Indica si el algoritmo trabaja
    * sobre el mismo arreglo.
    */
   inPlace: boolean;
 }
 
 /**
- * Información de los algoritmos disponibles.
+ * Información de todos los algoritmos.
  */
 export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
-  [AlgorithmType.BUBBLE_SORT]: {
-    type: AlgorithmType.BUBBLE_SORT,
+  BUBBLE_SORT: {
+    type: "BUBBLE_SORT",
     name: "Bubble Sort",
     description:
       "Compara elementos adyacentes y los intercambia cuando están en el orden incorrecto.",
@@ -92,8 +86,8 @@ export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
     inPlace: true,
   },
 
-  [AlgorithmType.SELECTION_SORT]: {
-    type: AlgorithmType.SELECTION_SORT,
+  SELECTION_SORT: {
+    type: "SELECTION_SORT",
     name: "Selection Sort",
     description:
       "Busca el elemento mínimo de la parte no ordenada y lo coloca en su posición correspondiente.",
@@ -107,8 +101,8 @@ export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
     inPlace: true,
   },
 
-  [AlgorithmType.INSERTION_SORT]: {
-    type: AlgorithmType.INSERTION_SORT,
+  INSERTION_SORT: {
+    type: "INSERTION_SORT",
     name: "Insertion Sort",
     description:
       "Construye el arreglo ordenado insertando cada elemento en su posición correspondiente.",
@@ -122,8 +116,8 @@ export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
     inPlace: true,
   },
 
-  [AlgorithmType.MERGE_SORT]: {
-    type: AlgorithmType.MERGE_SORT,
+  MERGE_SORT: {
+    type: "MERGE_SORT",
     name: "Merge Sort",
     description:
       "Divide el arreglo en partes más pequeñas, las ordena y posteriormente las combina.",
@@ -137,8 +131,8 @@ export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
     inPlace: false,
   },
 
-  [AlgorithmType.QUICK_SORT]: {
-    type: AlgorithmType.QUICK_SORT,
+  QUICK_SORT: {
+    type: "QUICK_SORT",
     name: "Quick Sort",
     description:
       "Selecciona un pivote y divide los elementos según sean menores o mayores que él.",
@@ -152,8 +146,8 @@ export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
     inPlace: true,
   },
 
-  [AlgorithmType.HEAP_SORT]: {
-    type: AlgorithmType.HEAP_SORT,
+  HEAP_SORT: {
+    type: "HEAP_SORT",
     name: "Heap Sort",
     description:
       "Utiliza una estructura heap para seleccionar y colocar los elementos en su posición.",
@@ -167,8 +161,8 @@ export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
     inPlace: true,
   },
 
-  [AlgorithmType.SHELL_SORT]: {
-    type: AlgorithmType.SHELL_SORT,
+  SHELL_SORT: {
+    type: "SHELL_SORT",
     name: "Shell Sort",
     description:
       "Ordena elementos separados por diferentes intervalos que progresivamente se reducen.",
@@ -184,16 +178,16 @@ export const ALGORITHM_INFO: Record<AlgorithmType, Algorithm> = {
 };
 
 /**
- * Obtiene la información de un algoritmo.
- */
-export const getAlgorithmInfo = (
-  algorithm: AlgorithmType
-): Algorithm => {
-  return ALGORITHM_INFO[algorithm];
-};
-
-/**
  * Lista de todos los algoritmos disponibles.
  */
 export const ALGORITHMS: Algorithm[] = Object.values(ALGORITHM_INFO);
+
+/**
+ * Obtiene la información de un algoritmo.
+ */
+export function getAlgorithmInfo(
+  algorithm: AlgorithmType
+): Algorithm {
+  return ALGORITHM_INFO[algorithm];
+}
 
