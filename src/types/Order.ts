@@ -2,23 +2,17 @@
 /**
  * Estados posibles de un pedido.
  */
-export enum EstadoPedido {
-  PENDIENTE = "PENDIENTE",
-  PROCESANDO = "PROCESANDO",
-  ENVIADO = "ENVIADO",
-  ENTREGADO = "ENTREGADO",
-  CANCELADO = "CANCELADO",
-}
+export type EstadoPedido =
+  | "PENDIENTE"
+  | "PROCESANDO"
+  | "ENVIADO"
+  | "ENTREGADO"
+  | "CANCELADO";
 
 /**
  * Niveles de prioridad de un pedido.
  */
-export enum PrioridadPedido {
-  BAJA = 1,
-  MEDIA = 2,
-  ALTA = 3,
-  URGENTE = 4,
-}
+export type PrioridadPedido = 1 | 2 | 3 | 4;
 
 /**
  * Representa un pedido dentro del simulador.
@@ -26,7 +20,7 @@ export enum PrioridadPedido {
 export interface Order {
   /**
    * Identificador numérico utilizado
-   * principalmente por los algoritmos.
+   * por los algoritmos.
    */
   id: number;
 
@@ -73,8 +67,8 @@ export interface Order {
   estado: EstadoPedido;
 
   /**
-   * Valor utilizado por la visualización
-   * de las barras del algoritmo.
+   * Valor utilizado para representar
+   * el pedido en las barras.
    */
   valor: number;
 
@@ -89,15 +83,13 @@ export interface Order {
   intercambiando?: boolean;
 
   /**
-   * Indica si el pedido ya encontró
-   * su posición definitiva.
+   * Indica si el pedido ya está ordenado.
    */
   ordenado?: boolean;
 }
 
 /**
- * Estados visuales de un pedido durante
- * la ejecución del algoritmo.
+ * Estados visuales durante la simulación.
  */
 export type OrderVisualState =
   | "normal"
