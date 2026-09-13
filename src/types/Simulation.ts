@@ -1,42 +1,42 @@
 
 import type { Order } from "./Order";
+import type { AlgorithmType } from "./Algorithm";
 
 /**
  * Estados posibles de la simulación.
  */
-export enum SimulationStatus {
-  IDLE = "IDLE",
-  RUNNING = "RUNNING",
-  PAUSED = "PAUSED",
-  COMPLETED = "COMPLETED",
-}
+export type SimulationStatus =
+  | "IDLE"
+  | "RUNNING"
+  | "PAUSED"
+  | "COMPLETED";
 
 /**
- * Velocidades disponibles para la animación.
+ * Velocidades disponibles para la simulación.
+ * El valor representa los milisegundos entre cada paso.
  */
-export enum SimulationSpeed {
-  VERY_SLOW = 1000,
-  SLOW = 500,
-  NORMAL = 250,
-  FAST = 100,
-  VERY_FAST = 25,
-}
+export type SimulationSpeed =
+  | 1000
+  | 500
+  | 250
+  | 100
+  | 25;
 
 /**
- * Tipo de operación realizada por el algoritmo.
+ * Operaciones realizadas por los algoritmos
+ * durante la simulación.
  */
-export enum SimulationOperation {
-  COMPARE = "COMPARE",
-  SWAP = "SWAP",
-  INSERT = "INSERT",
-  MERGE = "MERGE",
-  SELECT = "SELECT",
-  PIVOT = "PIVOT",
-  SORTED = "SORTED",
-}
+export type SimulationOperation =
+  | "COMPARE"
+  | "SWAP"
+  | "INSERT"
+  | "MERGE"
+  | "SELECT"
+  | "PIVOT"
+  | "SORTED";
 
 /**
- * Representa un paso individual de la simulación.
+ * Representa un paso de la simulación.
  */
 export interface SimulationStep {
   /**
@@ -45,17 +45,17 @@ export interface SimulationStep {
   step: number;
 
   /**
-   * Tipo de operación realizada.
+   * Operación realizada.
    */
   operation: SimulationOperation;
 
   /**
-   * Índice del primer elemento involucrado.
+   * Índice del primer elemento.
    */
   indexA?: number;
 
   /**
-   * Índice del segundo elemento involucrado.
+   * Índice del segundo elemento.
    */
   indexB?: number;
 
@@ -65,7 +65,7 @@ export interface SimulationStep {
   codeLine?: number;
 
   /**
-   * Descripción del paso actual.
+   * Explicación del paso actual.
    */
   description: string;
 
@@ -76,21 +76,21 @@ export interface SimulationStep {
 }
 
 /**
- * Métricas generadas durante la ejecución.
+ * Métricas de la simulación.
  */
 export interface SimulationMetrics {
   /**
-   * Número total de comparaciones.
+   * Cantidad de comparaciones.
    */
   comparisons: number;
 
   /**
-   * Número total de intercambios.
+   * Cantidad de intercambios.
    */
   swaps: number;
 
   /**
-   * Número total de pasos.
+   * Cantidad total de pasos.
    */
   steps: number;
 
@@ -106,62 +106,62 @@ export interface SimulationMetrics {
 }
 
 /**
- * Información completa de una simulación.
+ * Estado completo de una simulación.
  */
 export interface Simulation {
   /**
-   * Estado actual.
+   * Estado actual de la simulación.
    */
   status: SimulationStatus;
 
   /**
-   * Velocidad de la animación.
+   * Velocidad de ejecución.
    */
   speed: SimulationSpeed;
 
   /**
    * Algoritmo seleccionado.
    */
-  algorithm: string;
+  algorithm: AlgorithmType;
 
   /**
-   * Pedidos originales antes de ordenar.
+   * Pedidos originales.
    */
   originalOrders: Order[];
 
   /**
-   * Pedidos en el estado actual.
+   * Pedidos actuales.
    */
   orders: Order[];
 
   /**
-   * Todos los pasos generados por el algoritmo.
+   * Pasos generados por el algoritmo.
    */
   steps: SimulationStep[];
 
   /**
-   * Índice del paso que se está ejecutando.
+   * Paso que se está ejecutando actualmente.
    */
   currentStep: number;
 
   /**
-   * Métricas de la ejecución.
+   * Métricas actuales.
    */
   metrics: SimulationMetrics;
 }
 
 /**
- * Configuración utilizada para iniciar
+ * Configuración necesaria para iniciar
  * una nueva simulación.
  */
 export interface SimulationConfig {
   /**
-   * Algoritmo que se utilizará.
+   * Algoritmo seleccionado.
    */
-  algorithm: string;
+  algorithm: AlgorithmType;
 
   /**
-   * Velocidad de ejecución.
+   * Velocidad seleccionada.
    */
   speed: SimulationSpeed;
 
@@ -172,7 +172,7 @@ export interface SimulationConfig {
 }
 
 /**
- * Estado inicial de las métricas.
+ * Métricas iniciales de la simulación.
  */
 export const initialSimulationMetrics: SimulationMetrics = {
   comparisons: 0,
