@@ -281,18 +281,15 @@ export function useOrders(
   /**
    * Filtra los pedidos actuales por prioridad.
    */
-  const getOrdersByPriority =
-    useCallback(
-      (
-        priority: PrioridadPedido
-      ): Order[] => {
-        return orders.filter(
-          (order) =>
-            order.nivelPrioridad === priority
-        );
-      },
-      [orders]
+  const getOrdersByPriority = useCallback(
+  (priority: PrioridadPedido): Order[] => {
+    return orders.filter(
+      (order: Order) =>
+        order.nivelPrioridad === priority
     );
+  },
+  [orders]
+);
 
   /**
    * Filtra los pedidos actuales por estado.
