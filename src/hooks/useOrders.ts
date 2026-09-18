@@ -315,7 +315,7 @@ export function useOrders(
   const totalValue = useMemo(
     () =>
       orders.reduce(
-        (total, order) =>
+        (total : number, order : Order) =>
           total + order.valor,
         0
       ),
