@@ -6,11 +6,7 @@ import type {
   PrioridadPedido,
 } from "../types/Order";
 
-import {
-  getInitialOrders,
-  getOrdersByPriority,
-  getOrdersByStatus,
-} from "../data/orders";
+import { getInitialOrders } from "../data/orders";
 
 import {
   generateOrder,
@@ -30,6 +26,7 @@ export interface UseOrdersOptions {
  */
 export interface UseOrdersReturn {
   orders: Order[];
+
   orderCount: number;
   totalValue: number;
   totalProducts: number;
@@ -48,7 +45,9 @@ export interface UseOrdersReturn {
   setOrders: (orders: Order[]) => void;
 
   resetOrders: () => void;
+
   generateNewOrders: (count: number) => void;
+
   generateRandomOrderSet: (
     min?: number,
     max?: number
@@ -56,10 +55,14 @@ export interface UseOrdersReturn {
 
   clearOrders: () => void;
 
-  getOrderById: (id: number) => Order | undefined;
+  getOrderById: (
+    id: number
+  ) => Order | undefined;
+
   getOrdersByPriority: (
     priority: PrioridadPedido
   ) => Order[];
+
   getOrdersByStatus: (
     status: EstadoPedido
   ) => Order[];
@@ -67,21 +70,20 @@ export interface UseOrdersReturn {
 
 /**
  * Hook para administrar los pedidos del simulador.
- *
- * Centraliza todas las operaciones relacionadas
- * con los pedidos utilizados por la aplicación.
- *
- * @param options - Configuración inicial opcional.
- * @returns Estado y operaciones de los pedidos.
  */
 export function useOrders(
   options: UseOrdersOptions = {}
 ): UseOrdersReturn {
-  const initialOrders = options.initialOrders
-    ? options.initialOrders.map((order) => ({
-        ...order,
-      }))
-    : getInitialOrders();
+  /**
+   * Pedidos iniciales.
+   *
+   * Se define explícitamente como Order[]
+   * para evitar problemas de inferencia de TypeScript.
+   */
+  const initialOrders: Order[] =
+    options.initialOrders?.map((order) => ({
+      ...order,
+    })) ?? getInitialOrders();
 
   const [orders, setOrdersState] =
     useState<Order[]>(initialOrders);
@@ -90,24 +92,29 @@ export function useOrders(
    * Agrega un pedido individual.
    *
    * Si no se proporciona un pedido,
-   * genera uno automáticamente.
+   * se genera automáticamente.
    */
   const addOrder = useCallback(
     (order?: Order) => {
-      const newOrder =
-        order ?? generateOrder(orders.length + 1);
+      setOrdersState(
+        (currentOrders: Order[]): Order[] => {
+          const newOrder =
+            order ??
+            generateOrder(currentOrders.length + 1);
 
-      setOrdersState((currentOrders) => [
-        ...currentOrders,
-        {
-          ...newOrder,
-          comparando: false,
-          intercambiando: false,
-          ordenado: false,
-        },
-      ]);
+          return [
+            ...currentOrders,
+            {
+              ...newOrder,
+              comparando: false,
+              intercambiando: false,
+              ordenado: false,
+            },
+          ];
+        }
+      );
     },
-    [orders.length]
+    [order]
   );
 
   /**
@@ -125,10 +132,10 @@ export function useOrders(
 
       const total = Math.floor(count);
 
-      setOrdersState((currentOrders) => {
-        const newOrders = generateOrders(total);
+      const newOrders = generateOrders(total);
 
-        return [
+      setOrdersState(
+        (currentOrders: Order[]): Order[] => [
           ...currentOrders,
           ...newOrders.map((order) => ({
             ...order,
@@ -136,8 +143,8 @@ export function useOrders(
             intercambiando: false,
             ordenado: false,
           })),
-        ];
-      });
+        ]
+      );
     },
     []
   );
@@ -145,45 +152,57 @@ export function useOrders(
   /**
    * Elimina un pedido mediante su ID.
    */
-  const removeOrder = useCallback((id: number) => {
-    setOrdersState((currentOrders) =>
-      currentOrders.filter(
-        (order) => order.id !== id
-      )
-    );
-  }, []);
+  const removeOrder = useCallback(
+    (id: number) => {
+      setOrdersState(
+        (currentOrders: Order[]): Order[] =>
+          currentOrders.filter(
+            (order) => order.id !== id
+          )
+      );
+    },
+    []
+  );
 
   /**
    * Elimina varios pedidos mediante sus IDs.
    */
-  const removeOrders = useCallback((ids: number[]) => {
-    if (ids.length === 0) {
-      return;
-    }
+  const removeOrders = useCallback(
+    (ids: number[]) => {
+      if (ids.length === 0) {
+        return;
+      }
 
-    const idsSet = new Set(ids);
+      const idsSet = new Set(ids);
 
-    setOrdersState((currentOrders) =>
-      currentOrders.filter(
-        (order) => !idsSet.has(order.id)
-      )
-    );
-  }, []);
+      setOrdersState(
+        (currentOrders: Order[]): Order[] =>
+          currentOrders.filter(
+            (order) => !idsSet.has(order.id)
+          )
+      );
+    },
+    []
+  );
 
   /**
    * Actualiza parcialmente un pedido.
    */
   const updateOrder = useCallback(
-    (id: number, changes: Partial<Order>) => {
-      setOrdersState((currentOrders) =>
-        currentOrders.map((order) =>
-          order.id === id
-            ? {
-                ...order,
-                ...changes,
-              }
-            : order
-        )
+    (
+      id: number,
+      changes: Partial<Order>
+    ) => {
+      setOrdersState(
+        (currentOrders: Order[]): Order[] =>
+          currentOrders.map((order) =>
+            order.id === id
+              ? {
+                  ...order,
+                  ...changes,
+                }
+              : order
+          )
       );
     },
     []
@@ -192,13 +211,16 @@ export function useOrders(
   /**
    * Reemplaza todos los pedidos actuales.
    */
-  const setOrders = useCallback((newOrders: Order[]) => {
-    setOrdersState(
-      newOrders.map((order) => ({
-        ...order,
-      }))
-    );
-  }, []);
+  const setOrders = useCallback(
+    (newOrders: Order[]) => {
+      setOrdersState(
+        newOrders.map((order) => ({
+          ...order,
+        }))
+      );
+    },
+    []
+  );
 
   /**
    * Restaura los pedidos iniciales.
@@ -219,16 +241,15 @@ export function useOrders(
         return;
       }
 
-      setOrdersState(
-        generateOrders(Math.floor(count))
-      );
+      const total = Math.floor(count);
+
+      setOrdersState(generateOrders(total));
     },
     []
   );
 
   /**
-   * Genera una cantidad aleatoria de pedidos
-   * dentro de un rango.
+   * Genera una cantidad aleatoria de pedidos.
    */
   const generateRandomOrderSet = useCallback(
     (min = 5, max = 20) => {
@@ -249,42 +270,39 @@ export function useOrders(
   /**
    * Busca un pedido por ID.
    */
-  const getOrderById = useCallback(
-    (id: number): Order | undefined => {
-      return orders.find(
-        (order) => order.id === id
-      );
-    },
-    [orders]
-  );
+ const getOrderById = useCallback(
+  (id: number): Order | undefined => {
+    return orders.find(
+      (order: Order) => order.id === id
+    );
+  },
+  [orders]
+);
+  /**
+   * Filtra los pedidos actuales por prioridad.
+   */
+  const getOrdersByPriority =
+    useCallback(
+      (
+        priority: PrioridadPedido
+      ): Order[] => {
+        return orders.filter(
+          (order) =>
+            order.nivelPrioridad === priority
+        );
+      },
+      [orders]
+    );
 
   /**
-   * Filtra los pedidos por prioridad.
+   * Filtra los pedidos actuales por estado.
    */
-  const filterOrdersByPriority = useCallback(
-    (priority: PrioridadPedido): Order[] => {
-      return getOrdersByPriority(priority).filter(
-        (initialOrder) =>
-          orders.some(
-            (order) =>
-              order.id === initialOrder.id
-          )
-      );
-    },
-    [orders]
-  );
-
-  /**
-   * Filtra los pedidos por estado.
-   */
-  const filterOrdersByStatus = useCallback(
-    (status: EstadoPedido): Order[] => {
-      return getOrdersByStatus(status).filter(
-        (initialOrder) =>
-          orders.some(
-            (order) =>
-              order.id === initialOrder.id
-          )
+  const getOrdersByStatus = useCallback(
+    (
+      status: EstadoPedido
+    ): Order[] => {
+      return orders.filter(
+        (order) => order.estado === status
       );
     },
     [orders]
@@ -301,7 +319,8 @@ export function useOrders(
   const totalValue = useMemo(
     () =>
       orders.reduce(
-        (total, order) => total + order.valor,
+        (total, order) =>
+          total + order.valor,
         0
       ),
     [orders]
@@ -313,7 +332,8 @@ export function useOrders(
   const totalProducts = useMemo(
     () =>
       orders.reduce(
-        (total, order) => total + order.cantidad,
+        (total, order) =>
+          total + order.cantidad,
         0
       ),
     [orders]
@@ -321,6 +341,7 @@ export function useOrders(
 
   return {
     orders,
+
     orderCount,
     totalValue,
     totalProducts,
@@ -336,16 +357,16 @@ export function useOrders(
     setOrders,
 
     resetOrders,
+
     generateNewOrders,
     generateRandomOrderSet,
 
     clearOrders,
 
     getOrderById,
-    getOrdersByPriority:
-      filterOrdersByPriority,
-    getOrdersByStatus:
-      filterOrdersByStatus,
+
+    getOrdersByPriority,
+    getOrdersByStatus,
   };
 }
 
