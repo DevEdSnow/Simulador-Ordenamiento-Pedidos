@@ -295,15 +295,14 @@ export function useOrders(
    * Filtra los pedidos actuales por estado.
    */
   const getOrdersByStatus = useCallback(
-    (
-      status: EstadoPedido
-    ): Order[] => {
-      return orders.filter(
-        (order) => order.estado === status
-      );
-    },
-    [orders]
-  );
+  (status: EstadoPedido): Order[] => {
+    return orders.filter(
+      (order: Order) =>
+        order.estado === status
+    );
+  },
+  [orders]
+);
 
   /**
    * Cantidad actual de pedidos.
