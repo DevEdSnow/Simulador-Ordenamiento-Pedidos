@@ -10,10 +10,7 @@ export type BadgeVariant =
   | "purple"
   | "gray";
 
-export type BadgeSize =
-  | "sm"
-  | "md"
-  | "lg";
+export type BadgeSize = "sm" | "md" | "lg";
 
 export interface BadgeProps {
   children: ReactNode;
@@ -24,67 +21,40 @@ export interface BadgeProps {
   className?: string;
 }
 
-const variantClasses: Record<
-  BadgeVariant,
-  {
-    solid: string;
-    outlined: string;
-    dot: string;
-  }
-> = {
-  default: {
-    solid: "badge-default",
-    outlined: "badge-default-outline",
-    dot: "badge-default-dot",
-  },
-
-  primary: {
-    solid: "badge-primary",
-    outlined: "badge-primary-outline",
-    dot: "badge-primary-dot",
-  },
-
-  success: {
-    solid: "badge-success",
-    outlined: "badge-success-outline",
-    dot: "badge-success-dot",
-  },
-
-  warning: {
-    solid: "badge-warning",
-    outlined: "badge-warning-outline",
-    dot: "badge-warning-dot",
-  },
-
-  danger: {
-    solid: "badge-danger",
-    outlined: "badge-danger-outline",
-    dot: "badge-danger-dot",
-  },
-
-  info: {
-    solid: "badge-info",
-    outlined: "badge-info-outline",
-    dot: "badge-info-dot",
-  },
-
-  purple: {
-    solid: "badge-purple",
-    outlined: "badge-purple-outline",
-    dot: "badge-purple-dot",
-  },
-
-  gray: {
-    solid: "badge-gray",
-    outlined: "badge-gray-outline",
-    dot: "badge-gray-dot",
-  },
+const variantClasses: Record<BadgeVariant, string> = {
+  default: "badge-default",
+  primary: "badge-primary",
+  success: "badge-success",
+  warning: "badge-warning",
+  danger: "badge-danger",
+  info: "badge-info",
+  purple: "badge-purple",
+  gray: "badge-gray",
 };
 
-const sizeClasses: Record<
-  BadgeSize,
-  string
-> = {
+const outlineClasses: Record<BadgeVariant, string> = {
+  default: "badge-default-outline",
+  primary: "badge-primary-outline",
+  success: "badge-success-outline",
+  warning: "badge-warning-outline",
+  danger: "badge-danger-outline",
+  info: "badge-info-outline",
+  purple: "badge-purple-outline",
+  gray: "badge-gray-outline",
+};
+
+const dotClasses: Record<BadgeVariant, string> = {
+  default: "badge-default-dot",
+  primary: "badge-primary-dot",
+  success: "badge-success-dot",
+  warning: "badge-warning-dot",
+  danger: "badge-danger-dot",
+  info: "badge-info-dot",
+  purple: "badge-purple-dot",
+  gray: "badge-gray-dot",
+};
+
+const sizeClasses: Record<BadgeSize, string> = {
   sm: "badge-sm",
   md: "badge-md",
   lg: "badge-lg",
@@ -98,32 +68,33 @@ export function Badge({
   dot = false,
   className = "",
 }: BadgeProps) {
-  const selectedVariant =
-    variantClasses[variant];
+  const badgeVariant = outlined
+    ? outlineClasses[variant]
+    : variantClasses[variant];
 
   const classes = [
     "badge",
     sizeClasses[size],
-    outlined
-      ? selectedVariant.outlined
-      : selectedVariant.solid,
+    badgeVariant,
     className,
   ]
     .filter(Boolean)
     .join(" ");
 
- return (
-  <span className={classes}>
-    {dot && (
-      <span
-        className={`badge-dot ${dotClasses[variant]}`}
-        aria-hidden="true"
-      />
-    )}
+  return (
+    <span className={classes}>
+      {dot && (
+        <span
+          className={`badge-dot ${dotClasses[variant]}`}
+          aria-hidden="true"
+        />
+      )}
 
-    {children}
-  </span>
-);
+      <span className="badge-content">
+        {children}
+      </span>
+    </span>
+  );
 }
 
 export default Badge;
