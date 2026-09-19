@@ -112,20 +112,18 @@ export function Badge({
     .filter(Boolean)
     .join(" ");
 
-  return (
-    <span className={classes}>
-      {dot && (
-        <span
-          className={`badge-dot ${selectedVariant.dot}`}
-          aria-hidden="true"
-        />
-      )}
+ return (
+  <span className={classes}>
+    {dot && (
+      <span
+        className={`badge-dot ${dotClasses[variant]}`}
+        aria-hidden="true"
+      />
+    )}
 
-      <span className="badge-content">
-        {children}
-      </span>
-    </span>
-  );
+    {children}
+  </span>
+);
 }
 
 export default Badge;
