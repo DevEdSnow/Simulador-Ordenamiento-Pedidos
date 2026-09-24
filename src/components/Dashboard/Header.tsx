@@ -1,9 +1,22 @@
+type HeaderStatus =
+  | "IDLE"
+  | "RUNNING"
+  | "PAUSED"
+  | "COMPLETED";
+
 interface HeaderProps {
   title?: string;
   subtitle?: string;
   algorithmName?: string;
-  status?: "IDLE" | "RUNNING" | "PAUSED" | "COMPLETED";
+  status?: HeaderStatus;
 }
+
+const statusLabels: Record<HeaderStatus, string> = {
+  IDLE: "Listo",
+  RUNNING: "Ejecutando",
+  PAUSED: "Pausado",
+  COMPLETED: "Completado",
+};
 
 export function Header({
   title = "Simulador de Ordenamiento de Pedidos",
@@ -11,13 +24,6 @@ export function Header({
   algorithmName = "Bubble Sort",
   status = "IDLE",
 }: HeaderProps) {
-  const statusLabels: Record<HeaderProps["status"], string> = {
-    IDLE: "Listo",
-    RUNNING: "Ejecutando",
-    PAUSED: "Pausado",
-    COMPLETED: "Completado",
-  };
-
   const statusLabel = statusLabels[status];
 
   return (
