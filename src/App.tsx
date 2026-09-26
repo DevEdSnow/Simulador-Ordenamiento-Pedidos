@@ -21,7 +21,7 @@ function App() {
     algorithm,
     speed,
     status,
-    simulationOrders,
+    orders: simulationOrders,
     currentStep,
     steps,
     metrics,
@@ -34,7 +34,7 @@ function App() {
     reset,
     nextStep,
     previousStep,
-  } = useSimulation(orders);
+  } = useSimulation();
 
   const [activeItem, setActiveItem] = useState("simulation");
   const [language, setLanguage] = useState<CodeLanguage>("CPP");
