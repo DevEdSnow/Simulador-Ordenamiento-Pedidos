@@ -17,24 +17,26 @@ function App() {
     resetOrders,
   } = useOrders();
 
-  const {
-    algorithm,
-    speed,
-    status,
-    orders: simulationOrders,
-    currentStep,
-    steps,
-    metrics,
-    setAlgorithm,
-    setSpeed,
-    start,
-    pause,
-    resume,
-    stop,
-    reset,
-    nextStep,
-    previousStep,
-  } = useSimulation();
+const {
+  algorithm,
+  speed,
+  status,
+  orders: simulationOrders,
+  currentStep,
+  steps,
+  metrics,
+  setAlgorithm,
+  setSpeed,
+  start,
+  pause,
+  resume,
+  stop,
+  reset,
+  nextStep,
+  previousStep,
+} = useSimulation({
+  orders,
+});
 
   const [activeItem, setActiveItem] = useState("simulation");
   const [language, setLanguage] = useState<CodeLanguage>("CPP");
